@@ -1,0 +1,142 @@
+useful link
+https://www.geeksforgeeks.org/how-to-fix-git-remote-repository-not-found-error/
+
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/rosot2010/gradle-azure-demo.git
+git push -u origin main
+
+FOR todolist use;
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git push -u origin main
+git remote add origin https://github.com/rosot2010/gradle-azure-demo.git
+                   
+
+
+git remote set-url origin https://github.com/rosot2010/gradle-azure-demo.git 
+
+git remote set-url origin https://<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>@github.com/rosot2010/gradle-azure-demo.git 
+
+
+git remote add origin https://github.com//gradle-azure-demo.git
+$git clone https://github.com/gradle-azure-demo/rosot2010
+
+
+AZURE URL =>https://dev.azure.com/X00160463/
+INTEGRATE YOUR PROJECT IN AZURE
+4.2 Set up Azure DevOps Project and Pipeline
+Create a new Azure DevOps project:
+
+Go to https://dev.azure.com/ and sign in (or create an account if you don't have one)
+Click on "New project" in the top right corner
+Enter a project name (e.g., "Gradle Azure Demo")
+Set visibility to "Private"
+Click "Create"
+Set up Azure Pipelines:
+
+In your new Azure DevOps project, click on "Pipelines" in the left sidebar
+Click on "Create Pipeline"
+Connect to GitHub:
+
+On the "Where is your code?" page, select "GitHub"
+You may need to authorize Azure Pipelines to access your GitHub account
+Click "Authorize Azure Pipelines"
+You might need to confirm your GitHub password
+Select the repositories you want to allow Azure Pipelines to access, or select "All repositories"
+Click "Save"
+Select your repository:
+
+Once authorized, you'll see a list of your GitHub repositories
+Find and select the "gradle-azure-demo" repository you created earlier
+Configure your pipeline:
+
+On the "Configure your pipeline" page, select "Starter pipeline"
+This will create a basic azure-pipelines.yml file
+Review the pipeline YAML:
+
+Azure DevOps will display the contents of the azure-pipelines.yml file
+For now, leave it as is; we'll modify it in the next step
+Save and run:
+
+Click on the "Save" button (Not 'Save and Run'). We don't want to run a pipeline yet.
+In the pop-up window, leave the default commit message or customize it
+Ensure "Commit directly to the main branch" is selected
+Click "Save"
+View pipeline execution:
+
+Azure Pipelines will now create the YAML file in your GitHub repository
+This process creates a new Azure DevOps project and sets up a basic pipeline connected to your GitHub repository. In the next section, we'll modify this pipeline to work specifically with our Gradle project.
+
+4.3 Configure the Azure Pipeline
+In your Azure DevOps project, go to Pipelines and select your pipeline
+Click "Edit" to modify the azure-pipelines.yml file
+Replace the entire content with the following:
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: Gradle@3
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '17'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'build'
+
+- task: Gradle@3
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '17'
+    jdkArchitectureOption: 'x64'
+    tasks: 'showProjectInfo'
+Click "Validate and Save" and then "Save" to apply the changes.
+
+Click "Run" to run a pipeline. Observe the build and test results in Azure Pipelines.
+
+View Pipeline Results:
+
+After the pipeline run completes, click on the run number to view detailed results
+Explore the 'Summary', 'Jobs', and 'Tests' tabs to see different aspects of the build
+In the 'Jobs' tab, you can see a detailed log of each step in the pipeline
+The 'Tests' tab will show results of your JUnit tests
+Note: You may see a warning message like this:
+
+##[warning]Used 'chmod' method for gradlew file to make it executable.
+This is normal and not a cause for concern. Azure Pipelines is automatically making the Gradle wrapper script executable, which is necessary for the build to run on the Linux-based build agent. This is equivalent to running chmod +x gradlew on a Unix-like system.
+
+Explanation of changes and configuration:
+
+trigger: [main]: This setting causes the pipeline to run whenever changes are pushed to the main branch.
+pool: vmImage: 'ubuntu-latest': This specifies that the pipeline will run on the latest Ubuntu virtual machine image.
+The first Gradle@3 task:
+Runs the build task, which compiles the code, runs tests, and creates the project's output.
+Uses Java 17 (jdkVersionOption: '17'), matching our project setup.
+Publishes JUnit test results, making them visible in Azure DevOps.
+The second Gradle@3 task:
+Runs our custom showProjectInfo task that we created earlier.
+Also uses Java 17 for consistency.
+This configuration ensures that:
+
+Our project is built and tested on every push to the main branch.
+We're using the correct Java version (17) that matches our project setup.
+Test results are published and easily viewable
+Our custom task showProjectInfo is run, which can help verify project settings in the pipeline environment.
+After saving and running this pipeline, you should see two stages in your pipeline execution: one for building and testing your project, and another for displaying the project information.
+
+Conclusion
+By integrating your Gradle project with Azure Pipelines, you've automated the build and test process in a cloud environment. This setup ensures that your project is built and tested consistently, regardless of the developer's local environment. The pipeline you've created runs your Gradle build, executes tests, and even runs your custom task, demonstrating how local development practices can be mirrored in a CI/CD pipeline. This integration is a key step in implementing DevOps practices, enabling faster and more reliable software delivery.
