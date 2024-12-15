@@ -16,12 +16,11 @@ steps:
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '17'
+    jdkVersionOption: '1.11'
     jdkArchitectureOption: 'x64'
-    codeCoverageToolOption: 'JaCoCo'
-    codeCoverageClassFilesDirectories: 'build/classes/main/'
     publishJUnitResults: true
-    tasks: 'build'
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'clean build test jacocoTestReport'
    
 
   
