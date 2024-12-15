@@ -18,28 +18,17 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '17'
     jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'build'
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'build'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
     codeCoverageToolOption: 'JaCoCo'
     codeCoverageClassFilesDirectories: 'build/classes/main/'
-    javaHomeOption: 'JDKVersion'
+    
     sonarQubeRunAnalysis: true
-    sqGradlePluginVersionChoice: 'specify'
     sonarQubeGradlePluginVersion: '2.6.1'
     checkStyleRunAnalysis: true
     findBugsRunAnalysis: true
     spotBugsAnalysis: false
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'build'
+   
 
   
-- task: PublishBuildArtifacts@1
-  inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
