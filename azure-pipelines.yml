@@ -20,12 +20,6 @@ steps:
     jdkArchitectureOption: 'x64'
     codeCoverageToolOption: 'JaCoCo'
     codeCoverageClassFilesDirectories: 'build/classes/main/'
-    
-    sonarQubeRunAnalysis: true
-    sonarQubeGradlePluginVersion: '2.6.1'
-    checkStyleRunAnalysis: true
-    findBugsRunAnalysis: true
-    spotBugsAnalysis: false
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
