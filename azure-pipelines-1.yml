@@ -61,7 +61,7 @@ stages:
          sonar.projectName=todocicdca3
     - task: Gradle@3
       inputs:
-        workingDirectory: '$(Build.SourcesDirectory)/myApp'
+        workingDirectory: 'C:\Users\Henry\Documents\todolis'
         gradleWrapperFile: 'gradlew'
         gradleOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
