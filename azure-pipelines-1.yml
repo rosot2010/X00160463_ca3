@@ -19,7 +19,7 @@ stages:
     steps:
     - task: Gradle@3
       inputs:
-        workingDirectory: 'C:\Users\Henry\Documents\todolis'
+        workingDirectory: '$(Build.SourcesDirectory)/myApp'
         gradleWrapperFile: 'gradlew'
         gradleOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
@@ -32,7 +32,7 @@ stages:
     - task: PublishCodeCoverageResults@2
       inputs:
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/build/reports/jacoco/test/jacocoTestReport.xml'
-        pathToSources: '$(System.DefaultWorkingDirectory)/src/main/java/report'
+        pathToSources: '$(System.DefaultWorkingDirectory)/src/main/java/'
 
     - task: CopyFiles@2
       inputs:
@@ -59,17 +59,7 @@ stages:
         extraProperties: |
          sonar.projectKey=rosot2010
          sonar.projectName=todocicdca3
-    - task: Gradle@3
-      inputs:
-        workingDirectory: '$(Build.SourcesDirectory)/myApp'
-        gradleWrapperFile: 'gradlew'
-        gradleOptions: '-Xmx3072m'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '17'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: true
-        testResultsFiles: '**/TEST-*.xml'
-        tasks: 'clean build test jacocoTestReport sonar'
+  
 
     - task: SonarCloudPublish@3
       inputs:
