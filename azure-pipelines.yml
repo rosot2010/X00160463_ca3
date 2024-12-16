@@ -69,13 +69,9 @@ stages:
         pollingTimeoutSec: '300'
     - task: SonarCloudPrepare@3
       inputs:
-            SonarQube: 'sanacicdca3'
-            organization: 'x00160463'
-            scannerMode: 'cli'
-            configMode: 'manual'
-            cliProjectKey: 'rosot2010'
-            cliProjectName: 'todocicdca3'
-            cliSources: '.'
+        SonarQube: 'sanacicdca3'
+        organization: 'x00160463'
+        scannerMode: 'other'
 
 
 
