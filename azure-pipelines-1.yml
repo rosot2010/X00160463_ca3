@@ -32,7 +32,7 @@ steps:
 
 - task: Gradle@3
   inputs:
-    workingDirectory: 'myApp'
+    
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
