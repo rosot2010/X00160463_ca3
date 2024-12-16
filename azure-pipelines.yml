@@ -60,6 +60,9 @@ stages:
          sonar.projectKey=rosot2010
          sonar.projectName=todocicdca3
 
+    - task: SonarCloudAnalyze@3
+      inputs:
+             jdkversion: 'JAVA_HOME_17_X64'
 
     - task: SonarCloudPublish@3
       inputs:
