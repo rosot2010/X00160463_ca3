@@ -4,49 +4,72 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
+variables:
+  buildConfiguration: 'Release'
 
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - task: Gradle@3
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        tasks: 'clean build test jacocoTestReport'
+    
+    - task: PublishCodeCoverageResults@2
+      inputs:
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/build/reports/jacoco/test/jacocoTestReport.xml'
+        pathToSources: '$(System.DefaultWorkingDirectory)/src/main/java/'
 
-steps:
-- checkout: self
-  fetchDepth: 0
- 
+    - task: CopyFiles@2
+      inputs:
+        contents: '**/build/libs/*.jar'
+        targetFolder: '$(build.artifactStagingDirectory)'
 
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'drop'
 
+- stage: CodeAnalysis
+  jobs:
+  - job: SonarCloudAnalysis
+    steps:
+    - checkout: self
+      fetchDepth: 0
 
-- task: SonarCloudPrepare@3
-  inputs:
-    SonarCloud: 'a2865358-0159-4328-80aa-8537e963ca6f'
-    organization: 'sotona henry'
-    scannerMode: 'other'
-    extraProperties: |
-      # Additional properties that will be passed to the scanner,
-      # Put one key=value per line, example:
-      # sonar.exclusions=**/*.bin
-      sonar.projectKey=rosot2010
-      sonar.projectName=todocicdca3
+    - task: SonarCloudPrepare@3
+      inputs:
+        SonarCloud: 'SonarConnection'
+        organization: 'sotona henry'
+        scannerMode: 'other'
+        extraProperties: |
+        sonar.projectKey=rosot2010
+        sonar.projectName=todocicdca3
 
-- task: Gradle@3
-  inputs:
-    workingDirectory: '$(Build.SourcesDirectory)/myApp'
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '17'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'clean build test jacocoTestReport sonar'
+    - task: Gradle@3
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
+        tasks: 'sonar'
 
-- task: SonarCloudPublish@3
-  inputs:
-    pollingTimeoutSec: '300'
-# Optional: Publish coverage results to Azure DevOps
-- task: PublishCodeCoverageResults@2
-  inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/build/reports/jacoco/test/jacocoTestReport.xml'
-    pathToSources: '$(System.DefaultWorkingDirectory)/src/main/java/'
+    - task: SonarCloudPublish@3
+      inputs:
+        pollingTimeoutSec: '300'

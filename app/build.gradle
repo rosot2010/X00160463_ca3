@@ -8,11 +8,18 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    
+    id 'java'
+    id 'eclipse' // optional (to generate Eclipse project files)
+    id 'idea' // optional (to generate IntelliJ IDEA project files)
+    id 'jacoco'  // ADD THIS LINE for code coverage
+    id "org.sonarqube" version "5.1.0.4882" 
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+
 }
 
 dependencies {
@@ -20,7 +27,9 @@ dependencies {
     testImplementation libs.junit.jupiter
     implementation 'org.apache.commons:commons-lang3:3.12.0' 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
+    testImplementation(platform('org.junit:junit-bom:5.11.3'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+  
     // This dependency is used by the application.
     implementation libs.guava
 }
@@ -47,5 +56,30 @@ task showProjectInfo {
         println "Project Name: $project.name"
         println "Java Version: ${java.toolchain.languageVersion.get()}"
         println "Main Class: ${application.mainClass.get()}"
+    }
+}
+
+
+
+
+
+
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true  // ADD THIS LINE for more detailed output
+    }
+    finalizedBy jacocoTestReport  // ADD THIS LINE to auto-generate report after tests
+}
+
+// ADD THIS BLOCK for JaCoCo configuration
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
 }
