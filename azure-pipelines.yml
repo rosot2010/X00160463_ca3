@@ -19,7 +19,7 @@ stages:
     steps:
     - task: Gradle@3
       inputs:
-        workingDirectory: '$(Build.SourcesDirectory)/myApp'
+        workingDirectory: ''
         gradleWrapperFile: 'gradlew'
         gradleOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
@@ -59,17 +59,7 @@ stages:
         extraProperties: |
          sonar.projectKey=rosot2010
          sonar.projectName=todocicdca3
-    - task: Gradle@3
-      inputs:
-        workingDirectory: '$(Build.SourcesDirectory)/myApp'
-        gradleWrapperFile: 'gradlew'
-        gradleOptions: '-Xmx3072m'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '17'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: true
-        testResultsFiles: '**/TEST-*.xml'
-        tasks: 'clean build test jacocoTestReport sonar'
+
 
     - task: SonarCloudPublish@3
       inputs:
