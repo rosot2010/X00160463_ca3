@@ -14,3 +14,34 @@ pool:
 steps:
 - checkout: self
   fetchDepth: 0
+ 
+
+
+
+- task: SonarCloudPrepare@3
+  inputs:
+    SonarCloud: 'a2865358-0159-4328-80aa-8537e963ca6f'
+    organization: 'sotona henry'
+    scannerMode: 'other'
+    extraProperties: |
+      # Additional properties that will be passed to the scanner,
+      # Put one key=value per line, example:
+      # sonar.exclusions=**/*.bin
+      sonar.projectKey=rosot2010
+      sonar.projectName=todocicdca3
+
+- task: Gradle@3
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '17'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'clean build test jacocoTestReport sonar'
+
+- task: SonarCloudPublish@3
+  inputs:
+    pollingTimeoutSec: '300'
