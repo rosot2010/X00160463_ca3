@@ -82,11 +82,13 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: JavaToolInstaller@0
+   
+          - task: JavaToolInstaller@1
             inputs:
-              versionSpec: '$(javaVersion)'
-              jdkArchitectureOption: 'x64'
-              jdkSourceOption: 'PreInstalled'
+                  versionSpec: '11'
+                  jdkArchitectureOption: 'x64'
+                  jdkSourceOption: 'LocalDirectory'
+                  cleanDestinationDirectory: true
           
           - task: DownloadBuildArtifacts@0
             inputs:
