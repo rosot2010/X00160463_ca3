@@ -97,14 +97,14 @@ stages:
               downloadPath: '$(System.ArtifactsDirectory)'
           
           - script: |
-              JAR_FILE=$(find $(System.ArtifactsDirectory) -name *SNAPSHOT.jar)
+              JAR_FILE=$(find $(System.ArtifactsDirectory) -name *app.jar)
               if [ -z "$JAR_FILE" ]; then
                 echo "No JAR file found"
                 exit 1
               fi
               echo "Found JAR file: $JAR_FILE"
               java -jar $JAR_FILE &
-            displayName: 'Deploy Spring Boot app'
+            displayName: 'Deploy TodoList app'
 
 
    
