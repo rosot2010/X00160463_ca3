@@ -103,7 +103,7 @@ stages:
               fi
               echo "Found JAR file: $JAR_FILE"
               java -jar $JAR_FILE &
-            displayName: 'Todo list app'
+            displayName: 'Deploy Spring Boot app'
 
 
    
