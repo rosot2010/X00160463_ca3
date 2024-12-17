@@ -83,13 +83,12 @@ stages:
         deploy:
           steps:
    
+         
           - task: JavaToolInstaller@1
             inputs:
-                  versionSpec: '8'
-                  jdkArchitectureOption: 'x64'
-                  jdkSourceOption: 'LocalDirectory'
-                  cleanDestinationDirectory: true
-          
+              versionSpec: '11'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
