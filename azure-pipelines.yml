@@ -115,7 +115,7 @@ stages:
       inputs:
         buildType: 'current'
         downloadType: 'single'
-        artifactName: 'app.jar'
+        artifactName: 'drop'
         downloadPath: '$(System.DefaultWorkingDirectory)'
 
     # Run security scanning
