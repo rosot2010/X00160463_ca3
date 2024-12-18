@@ -126,7 +126,19 @@ stages:
         tools: 'credscan'    # Basic credential scanning
         sourcePath: '$(System.DefaultWorkingDirectory)'
 
-
-   
+- stage: DependencySecurity
+  displayName: 'Dependency Security Scanning'
+  jobs:
+  - job: OWASPCheck
+    steps:
+    - task: dependency-check-build-task@6
+      inputs:
+        projectName: '$(Build.Repository.Name)'
+        scanPath: '$(System.DefaultWorkingDirectory)'
+        format: 'HTML'
+        uploadReports: true
+        uploadSARIFReport: true
+        failOnCVSS: '7'
+        nvdApiKey: 'e1218dd8-3511-42d8-8a71-ea1b7b0884dc '  # Replace with your API key
 
   
